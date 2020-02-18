@@ -1,8 +1,8 @@
 imports:
-- path: backend_service.jinja
+- path: backend-service.jinja
 
 resources:
 - name: backend_service
-  type: backend_service.jinja
+  type: backend-service.jinja
   properties:
     region: REGION_TO_RUN
