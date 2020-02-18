@@ -1,0 +1,14 @@
+imports:
+- path: instance-group-manager.jinja
+- path: instance-template.jinja
+
+resources:
+- name: instance_group_manager
+  type: instance-group-manager.jinja
+  properties:
+    zone: us-central1-a
+    targetSize: 1
+    apiVersion: v1
+    apiVersionForIgm: v1
+- name: instance-template
+  type: instance-template.jinja
