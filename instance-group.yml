@@ -1,0 +1,6 @@
+imports:
+- path: instance_template.jinja
+
+resources:
+- name: instance_template
+  type: instance_template.jinja
