@@ -1,0 +1,11 @@
+imports:
+- path: instance-group-manager.jinja
+
+resources:
+- name: instance_group_manager
+  type: instant-grp-manager.jinja
+  properties:
+    zone: us-central1-a
+    targetSize: 1
+    apiVersion: v1
+    apiVersionForIgm: v1
