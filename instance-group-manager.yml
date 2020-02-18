@@ -3,7 +3,7 @@ imports:
 
 resources:
 - name: instance_group_manager
-  type: instant-grp-manager.jinja
+  type: instance-group-manager.jinja
   properties:
     zone: us-central1-a
     targetSize: 1
