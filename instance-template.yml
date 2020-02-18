@@ -2,5 +2,5 @@ imports:
 - path: instance-template.jinja
 
 resources:
-- name: instance_template
-  type: instance_template.jinja
+- name: instance-template
+  type: instance-template.jinja
