@@ -1,0 +1,23 @@
+resources:
+- type: gcp-types/compute-v1:httpHealthChecks
+  name: health-check-{{ env["deployment"] }}
+  properties:
+    host: localhost
+    port: 8080
+    requestPath: /path/to/my/service
+    timeoutSec: 3
+    description: integration test http health check
+    checkIntervalSec: 3
+    unhealthyThreshold: 5
+    healthyThreshold: 2
+
+- type: gcp-types/compute-v1:backendServices
+  name: bs1-{{ env["deployment"] }}
+  properties:
+    description: backend service for integration tests
+    healthChecks:
+      - $(ref.health-check-{{ env["deployment"] }}.selfLink)
+    port: 80
+    portName: http
+    protocol: HTTP
+    timeoutSec: 30
