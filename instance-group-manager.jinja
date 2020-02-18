@@ -1,0 +1,35 @@
+resources:
+
+- name: {{ env["deployment"] }}-it
+  type: gcp-types/compute-{{ properties["apiVersion"] }}:instanceTemplates
+  properties:
+    properties:
+      machineType: f1-micro
+      disks:
+      - deviceName: boot
+        boot: true
+        type: PERSISTENT
+        autoDelete: true
+        mode: READ_WRITE
+        initializeParams:
+          diskName: {{ env["deployment"] }}-disk
+          sourceImage: https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-7-wheezy-v20140619
+      networkInterfaces:
+        - network: https://www.googleapis.com/compute/v1/projects/{{ env["project"] }}/global/networks/default
+
+- name: {{ env["deployment"] }}-igm
+{% if "region" in properties %}
+  type: gcp-types/compute-{{ properties["apiVersionForIgm"] }}:regionInstanceGroupManagers
+{% else %}
+  type: gcp-types/compute-{{ properties["apiVersionForIgm"] }}:instanceGroupManagers
+{% endif %}
+  properties:
+{% if "region" in properties %}
+    region: {{ properties["region"] }}
+    failoverAction: NO_FAILOVER
+{% else %}
+    zone: {{ properties["zone"] }}
+{% endif %}
+    targetSize: {{ properties["targetSize"] }}
+    baseInstanceName: {{ env["deployment"] }}-instance
+    instanceTemplate: $(ref.{{ env["deployment"] }}-it.selfLink)
