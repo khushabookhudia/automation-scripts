@@ -13,6 +13,20 @@ resources:
         mode: READ_WRITE
         initializeParams:
           diskName: template-disk-{{ env["deployment"] }}
-          sourceImage: https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-7-wheezy-v20140619
+          sourceImage: https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-9-stretch-v20200210
+      metadata:
+        items:
+        - key: startup-script
+          value: |
+            apt update
+            apt install -y apache2
+            cat <<EOF > /var/www/html/index.html
+            <html><body>
+            <h2>This instance was created using Deployment Manager.</h2>
+            </body></html>
+            EOF
       networkInterfaces:
         - network: https://www.googleapis.com/compute/v1/projects/{{ env["project"] }}/global/networks/default
+          accessConfigs:
+          - name: External NAT
+            type: ONE_TO_ONE_NAT
