@@ -13,9 +13,27 @@ resources:
         mode: READ_WRITE
         initializeParams:
           diskName: {{ env["deployment"] }}-disk
-          sourceImage: https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-7-wheezy-v20140619
+          sourceImage: https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-9-stretch-v20200210
+      metadata:
+        items:
+        - key: startup-script
+          value: |
+            apt update
+            apt install -y apache2
+            cat <<EOF > /var/www/html/index.html
+            <html><body>
+            <h2>Welcome to your custom website.</h2>
+            <h2>VERSION 2.</h2>
+            </body></html>
+            EOF
       networkInterfaces:
         - network: https://www.googleapis.com/compute/v1/projects/{{ env["project"] }}/global/networks/default
+          
+          accessConfigs:
+            - name: External NAT
+              type: ONE_TO_ONE_NAT
+              networkTier: PREMIUM
+
 
 - name: {{ env["deployment"] }}-igm
 {% if "region" in properties %}
